@@ -1,0 +1,668 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BAUST BloodLink — Vital Flow Design System
+   Primary: #C30121 (Crimson) | Secondary: #2B282B (Charcoal)
+   Tertiary: #0D68AA (Azure) | Neutral: #8E7D7F (Warm Slate)
+   Canvas: #FBF6F6 (Soft Porcelain Blush)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ─── BASE RESETS ────────────────────────────────────────────────────────── */
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #2B2B2B;
+    background-color: #FAF4F4;
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* Custom Smooth Scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(195, 1, 33, 0.20);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(195, 1, 33, 0.40);
+  }
+
+  /* Focus visible styles */
+  :focus-visible {
+    outline: 2px solid #C30121;
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+
+  input, textarea, select {
+    font-family: inherit;
+  }
+}
+
+/* ─── VITAL FLOW COMPONENT LAYER ─────────────────────────────────────────── */
+@layer components {
+
+  /* ── Level 1: Standard Vital Glass Panel (cards, sidebar, topbar) ── */
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(228, 220, 222, 0.85);
+    box-shadow: 0 8px 30px rgba(43, 40, 43, 0.04);
+  }
+
+  /* ── Level 2: Floating Interactive / Critical Cards ── */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(228, 220, 222, 0.9);
+    box-shadow: 0 10px 32px rgba(43, 40, 43, 0.05);
+    border-radius: 1.25rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .glass-card:hover {
+    border-color: rgba(195, 1, 33, 0.35);
+    box-shadow: 0 16px 40px rgba(195, 1, 33, 0.09);
+    transform: translateY(-2px);
+  }
+
+  /* ── Level 3: Modals & Emergency Overlays ── */
+  .glass-modal {
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    border: 1.5px solid rgba(195, 1, 33, 0.30);
+    box-shadow: 0 24px 64px rgba(43, 40, 43, 0.16);
+    border-radius: 1.75rem;
+  }
+
+  /* ── Topbar — fixed 72px (Solid crisp surface, no bleed-through on scroll) ── */
+  .topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    z-index: 50;
+    background: #FFFFFF;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid rgba(228, 220, 222, 0.9);
+    box-shadow: 0 2px 12px rgba(43, 40, 43, 0.04);
+  }
+
+  /* ── Sidebar — fixed 260px desktop, collapsed 72px tablet, hidden mobile ── */
+  .sidebar {
+    position: fixed;
+    left: 0;
+    top: 72px;
+    bottom: 0;
+    z-index: 40;
+    @apply glass-panel;
+    border-top: none;
+    border-left: none;
+    border-bottom: none;
+    border-right: 1px solid rgba(228, 220, 222, 0.8);
+    box-shadow: 4px 0 20px rgba(43, 40, 43, 0.02);
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  @media (min-width: 768px) {
+    .sidebar {
+      display: flex;
+      width: 72px;
+      padding: 1.25rem 0.5rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .sidebar {
+      width: 260px;
+      padding: 1.25rem 1rem;
+    }
+  }
+
+  /* ── Main content area ── */
+  .main-content {
+    padding-left: 0;
+    padding-top: 72px;
+    padding-bottom: 76px; /* clears fixed mobile bottom tab bar */
+    min-height: 100vh;
+    position: relative;
+    background-color: #FBF6F6;
+  }
+
+  @media (min-width: 768px) {
+    .main-content {
+      padding-left: 72px;
+      padding-bottom: 0;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .main-content {
+      padding-left: 260px;
+      padding-bottom: 0;
+    }
+  }
+
+  /* ── Admin layout override ── */
+  .admin-layout .sidebar,
+  .admin-layout .topbar {
+    background: rgba(30, 27, 30, 0.95);
+    border-color: rgba(195, 1, 33, 0.25);
+  }
+
+  .admin-layout .sidebar-nav-item {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  .admin-layout .sidebar-nav-item:hover {
+    background: rgba(195, 1, 33, 0.16);
+    color: #ffffff;
+  }
+
+  /* ── Sidebar nav items ── */
+  .sidebar-nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 0.9rem;
+    border-radius: 0.85rem;
+    transition: all 0.18s ease;
+    color: #5E5153;
+    font-size: 14px;
+    font-weight: 600;
+    gap: 0.75rem;
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .sidebar-nav-item:hover {
+    background: rgba(240, 236, 239, 0.9);
+    color: #2B282B;
+  }
+
+  .sidebar-nav-item.active {
+    background: #C30121;
+    color: #FFFFFF;
+    box-shadow: 0 4px 18px rgba(195, 1, 33, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .sidebar-nav-item.active:hover {
+    transform: none;
+    background: #B0011E;
+  }
+
+  /* ── Blood group chip ── */
+  .blood-group-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.8rem;
+    border-radius: 9999px;
+    background: #FDF2F4;
+    border: 1px solid rgba(195, 1, 33, 0.22);
+    color: #C30121;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+  }
+
+  /* ── Status badge ── */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .status-badge.eligible {
+    background: #FDF2F4;
+    color: #C30121;
+    border: 1px solid rgba(195, 1, 33, 0.20);
+  }
+
+  .status-badge.ineligible {
+    background: #F2EDEE;
+    color: #8E7D7F;
+    border: 1px solid #E4DCDE;
+  }
+
+  /* ── Vital Flow Buttons ── */
+  /* Primary: #C30121 Solid Pill / Rounded */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #C30121;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 14px rgba(195, 1, 33, 0.28);
+    transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.12s ease;
+    cursor: pointer;
+    border: none;
+    white-space: nowrap;
+  }
+
+  .btn-primary:hover {
+    background: #A8011C;
+    box-shadow: 0 6px 20px rgba(195, 1, 33, 0.38);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(195, 1, 33, 0.25);
+  }
+
+  .btn-primary:disabled {
+    background: #B8AAAB;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Secondary: Soft #F0ECEF with Dark Charcoal Text */
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #F0ECEF;
+    color: #2B282B;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #E4DCDE;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn-secondary:hover {
+    background: #E5DFE3;
+    border-color: #D4C9CC;
+    color: #1C1A1C;
+  }
+
+  /* Inverted: #2B282B with White Text */
+  .btn-inverted {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #2B282B;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(43, 40, 43, 0.20);
+  }
+
+  .btn-inverted:hover {
+    background: #1C1A1C;
+    transform: translateY(-1px);
+  }
+
+  /* Outlined: White / Transparent with #2B282B / #C30121 Border */
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    background: transparent;
+    color: #C30121;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1.5px solid #C30121;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .btn-outline:hover {
+    background: #FDF2F4;
+    border-color: #A8011C;
+    color: #A8011C;
+  }
+
+  /* Tertiary / Action: Medical Azure #0D68AA */
+  .btn-tertiary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    background: #0D68AA;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.18s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(13, 104, 170, 0.25);
+  }
+
+  .btn-tertiary:hover {
+    background: #094C7D;
+  }
+
+  /* ── Form inputs ── */
+  .input-field {
+    width: 100%;
+    padding: 0.65rem 0.95rem;
+    border-radius: 0.75rem;
+    background: #FFFFFF;
+    border: 1.5px solid #E4DCDE;
+    color: #2B282B;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    outline: none;
+  }
+
+  .input-field::placeholder {
+    color: #8E7D7F;
+  }
+
+  .input-field:focus {
+    border-color: #C30121;
+    box-shadow: 0 0 0 3px rgba(195, 1, 33, 0.12);
+    background: #FFFFFF;
+  }
+
+  /* Glass Input */
+  .glass-input {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1.5px solid #E4DCDE;
+    color: #2B282B;
+    outline: none;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+  }
+
+  .glass-input:focus {
+    border-color: #C30121;
+    box-shadow: 0 0 0 3px rgba(195, 1, 33, 0.14);
+    background: #FFFFFF;
+  }
+
+  .input-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2B282B;
+    margin-bottom: 0.375rem;
+  }
+
+  /* ── Search Input (as in Vital Flow design tile) ── */
+  .vital-search-input {
+    background: #F7F3F4;
+    border: 1px solid #ECE6E7;
+    border-radius: 9999px;
+    padding: 0.55rem 1.25rem 0.55rem 2.5rem;
+    font-size: 14px;
+    color: #2B282B;
+    outline: none;
+    transition: all 0.2s ease;
+  }
+
+  .vital-search-input:focus {
+    background: #FFFFFF;
+    border-color: #C30121;
+    box-shadow: 0 0 0 3px rgba(195, 1, 33, 0.10);
+  }
+
+  /* ── Skeleton loading ── */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(195, 1, 33, 0.03) 25%,
+      rgba(195, 1, 33, 0.08) 50%,
+      rgba(195, 1, 33, 0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+    border-radius: 0.75rem;
+  }
+
+  @keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* ── Dividers ── */
+  .divider {
+    height: 1px;
+    background: #E4DCDE;
+    margin: 0;
+  }
+
+  /* ── Error state container ── */
+  .error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  /* ── Empty state container ── */
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    text-align: center;
+    gap: 1rem;
+    color: #8E7D7F;
+  }
+
+  /* ── Pulse emergency indicator ── */
+  .emergency-ping {
+    position: relative;
+    display: inline-flex;
+  }
+
+  .emergency-ping::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: #C30121;
+    animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    opacity: 0.6;
+  }
+
+  .emergency-ping::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: #C30121;
+  }
+
+  /* ── Notification badge ── */
+  .notification-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: #C30121;
+    color: #FFFFFF;
+    font-size: 10px;
+    font-weight: 700;
+    border: 2px solid #FBF6F6;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  /* ── Page section wrapper ── */
+  .page-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 1rem;
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .page-wrapper {
+      padding: 1.5rem;
+    }
+  }
+
+  /* ── Card left-accent (critical blood request indicator) ── */
+  .card-critical-accent {
+    border-left: 3.5px solid #C30121 !important;
+  }
+
+  /* ── Section heading ── */
+  .section-heading {
+    font-size: 20px;
+    font-weight: 700;
+    color: #2B282B;
+    letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* ── Editorial Headline Font ── */
+  .font-headline {
+    font-family: 'Georgia', serif;
+  }
+
+  /* ─── BRAND STYLES (MATCHING REFERENCE TYPOGRAPHY) ─── */
+  .brand-baust {
+    background: linear-gradient(180deg, #064E3B 0%, #047857 45%, #15803D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #064E3B;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    display: inline-block;
+  }
+
+  .brand-bloodlink {
+    background: linear-gradient(180deg, #52000B 0%, #940119 45%, #C30121 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #C30121;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    display: inline-block;
+  }
+  /* ─── ADMIN COMMAND CENTER & RADIANT CRIMSON GLASS EFFECTS ─── */
+  .pulsing-sos {
+    animation: pulse-border 2s infinite;
+  }
+  @keyframes pulse-border {
+    0% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0.4); }
+    70% { box-shadow: 0 0 0 8px rgba(225, 29, 72, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(225, 29, 72, 0); }
+  }
+
+  .admin-glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.06), 0 4px 6px -2px rgba(15, 23, 42, 0.02);
+  }
+
+  .admin-glass-card {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .admin-glass-card:hover {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 12px 24px -6px rgba(29, 78, 216, 0.09);
+    transform: translateY(-2px);
+  }
+}
+
+/* ─── CANVAS AMBIENT BACKGROUND ─────────────────────────────────────────── */
+#ambient-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.28;
+}
+
+/* ─── PRINT STYLES ───────────────────────────────────────────────────────── */
+@media print {
+  .topbar, .sidebar { display: none !important; }
+  .main-content { padding: 0 !important; }
+}
